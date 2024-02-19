@@ -56,13 +56,13 @@ checkpoint_interval = 500
 start_from_checkpoint = 39000  # Example: start from row 200; adjust this as needed
 
 # Load the CSV file
-df = pd.read_csv('GameEntities.csv')
+df = pd.read_csv('Data/GameEntities.csv')
 
 # Optionally, load enriched data from the last checkpoint if needed
 enriched_data = []
 if start_from_checkpoint > 0:
     try:
-        checkpoint_df = pd.read_csv(f'EnrichedGameEntities_checkpoint_{start_from_checkpoint}.csv')
+        checkpoint_df = pd.read_csv(f'Data/EnrichedGameEntities_checkpoint_{start_from_checkpoint}.csv')
         enriched_data = checkpoint_df.to_dict('records')
     except FileNotFoundError:
         print(f"No checkpoint file found for index {start_from_checkpoint}. Starting from the beginning.")
@@ -82,9 +82,9 @@ for index, row in tqdm(df.iterrows(), total=df.shape[0], desc="Fetching Wikidata
     # Checkpoint: Save progress at regular intervals
     if (index + 1 - start_from_checkpoint) % checkpoint_interval == 0 or (index + 1) == df.shape[0]:
         partial_df = pd.DataFrame(enriched_data)
-        partial_df.to_csv(f'EnrichedGameEntities_checkpoint_{index + 1}.csv', index=False)
+        partial_df.to_csv(f'Data/EnrichedGameEntities_checkpoint_{index + 1}.csv', index=False)
         print(f"Checkpoint saved at index {index + 1}")
 
 # Save the final complete dataframe at the end as well
 enriched_df = pd.DataFrame(enriched_data)
-enriched_df.to_csv('EnrichedGameEntities_final.csv', index=False)
+enriched_df.to_csv('Data/EnrichedGameEntities_final.csv', index=False)
