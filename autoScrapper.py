@@ -4,6 +4,8 @@ import json
 from tqdm import tqdm  # Import tqdm for the progress bar
 
 def fetch_wikidata_details(entity_id):
+
+    # Currently using : genre, platform, gameMode, inputDevice for each game title
     query = """
     SELECT ?genreLabel ?platformLabel ?gameModeLabel ?inputDeviceLabel WHERE {
       OPTIONAL { wd:""" + entity_id + """ wdt:P136 ?genre. }
@@ -51,7 +53,7 @@ def fetch_wikidata_details(entity_id):
 
 # Parameters
 checkpoint_interval = 500
-start_from_checkpoint = 0  # Example: start from row 200; adjust this as needed
+start_from_checkpoint = 39000  # Example: start from row 200; adjust this as needed
 
 # Load the CSV file
 df = pd.read_csv('GameEntities.csv')
