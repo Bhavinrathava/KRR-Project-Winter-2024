@@ -24,7 +24,9 @@ def main():
         for col in cols:
             if col == "video_gameLabel":
                 continue
-            if values[col] != "":
+
+            #check for empty and None values
+            if values[col] is not None and values[col] != "[]" and not isinstance(values[col], float):
                 value = values[col].split("; ")
                 if col == "genre":
                     genreSet.update(value)
@@ -34,7 +36,6 @@ def main():
                     gameModesSet.update(value)
                 elif col == "inputDevice":
                     inputDeviceSet.update(value)
-        break
         
     
     predicatebase = """
@@ -44,25 +45,34 @@ def main():
     """
 
     predicateMap = {}
+    givenSet = set()
+
     for col in cols:
+        with open('Data/Predicates.txt', 'a', encoding='utf-8') as f:
+            f.write(";;; Predicates defined for Type : %s\n" % col)
         if col == "video_gameLabel":
             continue
         if col == "genre":
             givenSet = genreSet
-            for element in givenSet:
-                print(element)
-                element_ = element.replace(" ","_")
-                predicateName = col+"_"+element_
-                predicate = predicatebase.replace("<Name>",predicateName)
-                
-                #write predicatemap value to file 
-                with open('Data/Predicates.txt', 'a') as f:
-                    f.write("%s\n" % predicate)
-                print(predicate)
-                predicateMap[predicateName] = element
+        if col == "platform":
+            givenSet = platformSet
+        elif col == "gameModes":
+            givenSet = gameModesSet
+        elif col == "inputDevice":
+            givenSet = inputDeviceSet
 
+        
+        for element in givenSet:
+            element_ = element.replace(" ","_")
+            predicateName = col+"_"+element_
+            predicate = predicatebase.replace("<Name>",predicateName)
+            
+            #write predicatemap value to file 
+            with open('Data/Predicates.txt', 'a', encoding='utf-8') as f:
+                f.write("%s\n" % predicate)
+            predicateMap[predicateName] = element
     #store the predicates in a file
-    with open('Data/PredicateMap.txt', 'w') as f:
+    with open('Data/PredicateMap.txt', 'w', encoding='utf-8') as f:
         for key,value in predicateMap.items():
             f.write("%s,%s\n" % (key,value))
 
