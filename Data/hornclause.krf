@@ -29,5 +29,5 @@
 
 (<== (similarGameEffort ?inputgame ?outputgame)
 	(sameInputdevice ?inputgame ?outputgame)
-	(sameGenre ?intputgame ?outputgame)
+	(sameGenre ?inputgame ?outputgame)
 )
