@@ -46,7 +46,9 @@ def main():
 
     predicateMap = {}
     givenSet = set()
-
+    '''
+    Civilization V,Q2385,4X; turn-based strategy video game,Microsoft Windows; Linux; macOS,co-op mode; single-player video game; multiplayer video game,mouse; computer keyboard
+    '''
     for col in cols:
         with open('Data/Predicates.txt', 'a', encoding='utf-8') as f:
             f.write(";;; Predicates defined for Type : %s\n" % col)
