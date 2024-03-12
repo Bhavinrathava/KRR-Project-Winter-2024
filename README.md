@@ -17,7 +17,7 @@ Civilization III,Q2374,turn-based strategy video game; simulation video game; gr
 
 We automated the KB building process from this raw data using Python Scripts. 
 
-#### Example of Game_Predicates.KRF
+#### Example of Predicate.KRF
 ```
 (isa Game Collection)
 (isa Genre Collection)
@@ -35,9 +35,26 @@ We automated the KB building process from this raw data using Python Scripts.
 
 ;;; Similarly for other Game Attributes defined in actual file
 ```
+#### Example of GamePredicatesPop.krf
 
+```
+ (in-microtheory GameRecommenderMt)
+ 
+ ( isa Genre genre_postapocalypticvideogame ) 
+ ( isa Genre genre_combatflightsimulatorgame ) 
+ ( isa Genre genre_simulationgame ) 
+ ( isa Genre genre_war ) 
+ ( isa Genre genre_tabletopgame ) 
+ ( isa Genre genre_mechsimulationgame ) 
+ ( isa Genre genre_dramaanimeandmanga ) 
+ ( isa Genre genre_rallying ) 
+ ( isa Genre genre_shogivideogame ) 
+ ( isa Genre genre_shootemup ) 
+ ( isa Genre genre_Rocksanddiamondsvideogame ) 
 
-#### Example of Game_Details.KRF
+```
+
+#### Example of GameDetailsPop.KRF
 
 ```
 ;;; Civilization III
@@ -50,7 +67,77 @@ We automated the KB building process from this raw data using Python Scripts.
 
 #### The reasoning:
 
-* Recommendation A) Take input game, check if there’s another game in the Knowledge Base which has the same Genre & GameMode and recommend it.
-<br>For Ex: If input is CallOfDuty, which has Genre action & GameMode singleplayer, games like Battlefield_Bad_Company will be recommended. Since they share the same Genre & GameMode.
-* Recommendation B) Take input game, check if there’s another game in the KB which has the same Genre & InputDevice and recommend it
-<br>For Ex: If input is TombRaider, which has Genre adventure & GameMode singpleplayer, games like Knack2 will be recommended. Since they share the same Genre & GameMode.
+We are recommending game based on 2 criterion : 
+
+- Same Game Intensity : 
+    - This matches games based on same Genre and same Game Modes for different games
+
+- Same Game Effort : 
+    - THis matches games based on Same Genre and Same Platform 
+
+Our horn clause is defined as follows : 
+
+```
+
+(in-microtheory GameRecommenderMt)
+
+(<== (sameGenre ?game1 ?game2)
+	(inGenre ?game1 ?genre)
+	(inGenre ?game2 ?genre)
+    (different ?game1 ?game2)
+)
+
+(<== (samePlatform ?game1 ?game2)
+	(onPlatform ?game1 ?platform)
+	(onPlatform ?game2 ?platform)
+    (different ?game1 ?game2)
+)
+
+(<== (sameInputdevice ?game1 ?game2)
+	(withInputDevice ?game1 ?inputdevice)
+	(withInputDevice ?game2 ?inputdevice)
+    (different ?game1 ?game2)
+)
+
+(<== (sameGamemode ?game1 ?game2)
+	(hasGameMode ?game1 ?gamemode)
+	(hasGameMode ?game2 ?gamemode)
+    (different ?game1 ?game2)
+)
+
+; ; ; similar games
+
+(<== (similarGameIntensity ?inputgame ?outputgame)
+	(sameGenre ?inputgame ?outputgame)
+	(sameGamemode ?inputgame ?outputgame)
+    (different ?inputgame ?outputgame)
+)
+
+(<== (similarGameEffort ?inputgame ?outputgame)
+	(samePlatform ?inputgame ?outputgame)
+	(sameGenre ?inputgame ?outputgame)
+	(different ?inputgame ?outputgame)
+)
+
+```
+
+
+#### Project Structure : 
+
+- Use AutoScrapper.py to generate the raw data CSV 
+- Generate the predicates for use in the KB files and define the fields you want to use in this recommendation engine 
+- Generate the definitions of various attributes like genres, Platforms etc using the generatePredicateDefinition.py 
+- Generate the actual game details for each game using genGameDetails.py
+- Hand craft the Horn clauses and test them in companions app. 
+
+#### How to use this project ? 
+
+- You can expands the fields to fetch by modifying code in the autoScrapper.py to get extended datasource to build upon. 
+- To add New fields, first define them in the Predicate.krf 
+- Then you can modify the code in generatePredicateDefinition.py to create definitions for your new field attribute. 
+- Then you modify the code inside genGameDetails.py to include the field you just added and populate it for each game. 
+- You can extend the rules in the HornClause.krf to add any new rules that you want to recommend the games based on. 
+- You can then install Companions app on your device. 
+-Load up the KRF Files in this order : Predicate.krf, gamePredicatesPop.krf, GameDetailsPop.krf, Hornclause.krf
+
+- Then query using the format : (sameGameIntensity <YOURGAMEHERE> ?outputgame)
