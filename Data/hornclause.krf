@@ -3,32 +3,42 @@
 (<== (sameGenre ?game1 ?game2)
 	(inGenre ?game1 ?genre)
 	(inGenre ?game2 ?genre)
+    (different ?game1 ?game2)
 )
 
 (<== (samePlatform ?game1 ?game2)
 	(onPlatform ?game1 ?platform)
 	(onPlatform ?game2 ?platform)
+    (different ?game1 ?game2)
 )
 
 (<== (sameInputdevice ?game1 ?game2)
 	(withInputDevice ?game1 ?inputdevice)
 	(withInputDevice ?game2 ?inputdevice)
+    (different ?game1 ?game2)
 )
 
 (<== (sameGamemode ?game1 ?game2)
 	(hasGameMode ?game1 ?gamemode)
 	(hasGameMode ?game2 ?gamemode)
+    (different ?game1 ?game2)
 )
 
 ; ; ; similar games
 
 (<== (similarGameIntensity ?inputgame ?outputgame)
-
 	(sameGenre ?inputgame ?outputgame)
 	(sameGamemode ?inputgame ?outputgame)
+    (different ?inputgame ?outputgame)
+	(count ?outputgame count)
+    (test (> count 5))
+    (limit 5 ?outputgame)
 )
 
 (<== (similarGameEffort ?inputgame ?outputgame)
-	(sameInputdevice ?inputgame ?outputgame)
-	(sameGenre ?inputgame ?outputgame)
+	(samePlatform ?inputgame ?outputgame)
+	(sameGenre ?inputgame ?outputgame)
+	(count ?outputgame count)
+    (test (> count 5))
+    (limit 5 ?outputgame)
 )

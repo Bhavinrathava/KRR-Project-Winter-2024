@@ -48,6 +48,3 @@
 (arg2isa withInputDevice InputDevice)
 (genlPreds withInputDevice GameCanBePlayedWith)
 (comment withInputDevice "(withInputDevice ?game ?inputdevice) says ?game can be played with ?inputdevice inputdevice)
-
-
-
