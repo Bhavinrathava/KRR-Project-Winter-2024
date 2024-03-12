@@ -23,6 +23,7 @@
 ; ; ; similar games
 
 (<== (similarGameIntensity ?inputgame ?outputgame)
+
 	(sameGenre ?inputgame ?outputgame)
 	(sameGamemode ?inputgame ?outputgame)
 )

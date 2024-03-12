@@ -1,0 +1,24 @@
+(in-microtheory GameRecommenderMt)
+
+(isa Genre 4X)
+(isa Platform Microsoft_Windows)
+(isa GameMode single-player_video_game)
+(isa InputDevice mouse)
+
+;;; Civilization III
+(isa Civilization_III Game)
+(inGenre Civilization_III 4X)
+(onPlatform Civilization_III Microsoft_Windows)
+(hasGameMode Civilization_III single-player_video_game)
+(withInputDevice Civilization_III mouse)
+
+;;;
+
+;;; Civilization IV
+(isa Civilization_IV Game)
+(inGenre Civilization_IV 4X)
+(onPlatform Civilization_IV Microsoft_Windows)
+(hasGameMode Civilization_IV single-player_video_game)
+(withInputDevice Civilization_IV mouse)
+
+

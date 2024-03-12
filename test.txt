@@ -1,0 +1,8 @@
+
+Predicate 
+Details 
+Horn Clause
+
+Predicates, Details, Hornclause
+
+((similarGameIntensity Civilization_III Civilization_IV))

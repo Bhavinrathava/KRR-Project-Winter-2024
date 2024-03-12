@@ -1,0 +1,35 @@
+
+
+(in-microtheory GameRecommenderMt)
+
+(<== (sameGenre ?game1 ?game2)
+	(inGenre ?game1 ?genre)
+	(inGenre ?game2 ?genre)
+)
+
+(<== (samePlatform ?game1 ?game2)
+	(onPlatform ?game1 ?platform)
+	(onPlatform ?game2 ?platform)
+)
+
+(<== (sameInputdevice ?game1 ?game2)
+	(withInputDevice ?game1 ?inputdevice)
+	(withInputDevice ?game2 ?inputdevice)
+)
+
+(<== (sameGamemode ?game1 ?game2)
+	(hasGameMode ?game1 ?gamemode)
+	(hasGameMode ?game2 ?gamemode)
+)
+
+; ; ; similar games
+
+(<== (similarGameIntensity ?inputgame ?outputgame)
+	(sameGenre ?inputgame ?outputgame)
+	(sameGamemode ?inputgame ?outputgame)
+)
+
+(<== (similarGameEffort ?inputgame ?outputgame)
+	(sameInputdevice ?inputgame ?outputgame)
+	(sameGenre ?inputgame ?outputgame)
+)
